@@ -1,6 +1,8 @@
 #include "Graph.h"
 #include <fstream>
 #include <cstdlib>
+#include <iostream>
+#include <sstream>
 
 GraphList::GraphList(int V, int E) : V(V), E(E) {
     adjList.resize(V);
@@ -20,11 +22,16 @@ void GraphMatrix::addEdge(int src, int dest, int weight) {
     matrix[dest][src] = weight; // dla nieskierowanego grafu
 }
 
+// Funkcja do wczytywania grafu z pliku w formacie listy sąsiedztwa
 GraphList readGraphFromFileList(const std::string& filename) {
     std::ifstream file(filename);
-    int V, E;
-    file >> V >> E;
-    GraphList graph(V, E);
+    if (!file) {
+        std::cerr << "Nie można otworzyć pliku: " << filename << std::endl;
+        exit(1);
+    }
+    int V;
+    file >> V;
+    GraphList graph(V, 0);
     int src, dest, weight;
     while (file >> src >> dest >> weight) {
         graph.addEdge(src, dest, weight);
@@ -32,8 +39,16 @@ GraphList readGraphFromFileList(const std::string& filename) {
     return graph;
 }
 
+
+
+
+
 GraphMatrix readGraphFromFileMatrix(const std::string& filename) {
     std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Nie można otworzyć pliku: " << filename << std::endl;
+        exit(1);
+    }
     int V, E;
     file >> V >> E;
     GraphMatrix graph(V, E);
@@ -43,6 +58,7 @@ GraphMatrix readGraphFromFileMatrix(const std::string& filename) {
     }
     return graph;
 }
+
 
 GraphList generateRandomGraphList(int V, double density) {
     int E = density * V * (V - 1) / 2;
