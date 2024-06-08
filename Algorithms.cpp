@@ -4,7 +4,7 @@
 #include <climits>
 #include <iostream>
 #include <stdexcept>
-
+//algorytm dla listy sasiedztwa
 std::vector<Edge> primMSTList(GraphList& graph) {
     std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<std::pair<int, int>>> pq;
     std::vector<int> key(graph.V, INT_MAX);
@@ -31,7 +31,7 @@ std::vector<Edge> primMSTList(GraphList& graph) {
     }
     return result;
 }
-
+//algorytm dla macierzy incydencji
 std::vector<Edge> primMSTMatrix(GraphMatrix& graph) {
     std::vector<int> key(graph.V, INT_MAX);
     std::vector<int> parent(graph.V, -1);
@@ -59,7 +59,7 @@ std::vector<Edge> primMSTMatrix(GraphMatrix& graph) {
     }
     return result;
 }
-
+//algorytm dla listy sasiedztwa
 std::vector<Edge> kruskalMSTList(GraphList& graph) {
     std::vector<Edge> edges;
     for (int u = 0; u < graph.V; ++u) {
@@ -94,7 +94,7 @@ std::vector<Edge> kruskalMSTList(GraphList& graph) {
     }
     return result;
 }
-
+//algorytm dla macierzy incydencji
 std::vector<Edge> kruskalMSTMatrix(GraphMatrix& graph) {
     std::vector<Edge> edges;
     for (int u = 0; u < graph.V; ++u) {
@@ -129,7 +129,7 @@ std::vector<Edge> kruskalMSTMatrix(GraphMatrix& graph) {
     }
     return result;
 }
-
+//algorytm dla listy sasiedztwa
 std::pair<std::vector<int>, std::vector<int>> dijkstraList(GraphList& graph, int src, int dest) {
     std::vector<int> dist(graph.V, INT_MAX);
     std::vector<int> prev(graph.V, -1);
@@ -149,7 +149,7 @@ std::pair<std::vector<int>, std::vector<int>> dijkstraList(GraphList& graph, int
     }
     return {dist, prev};
 }
-
+//algorytm dla macierzy incydencji
 std::pair<std::vector<int>, std::vector<int>> dijkstraMatrix(GraphMatrix& graph, int src, int dest) {
     std::vector<int> dist(graph.V, INT_MAX);
     std::vector<int> prev(graph.V, -1);
@@ -173,7 +173,7 @@ std::pair<std::vector<int>, std::vector<int>> dijkstraMatrix(GraphMatrix& graph,
     }
     return {dist, prev};
 }
-
+//algorytm dla listy sasiedztwa
 std::pair<std::vector<int>, std::vector<int>> bellmanFordList(GraphList& graph, int src, int dest) {
     std::vector<int> dist(graph.V, INT_MAX);
     std::vector<int> prev(graph.V, -1);
@@ -197,7 +197,7 @@ std::pair<std::vector<int>, std::vector<int>> bellmanFordList(GraphList& graph, 
     }
     return {dist, prev};
 }
-
+//algorytm dla macierzy incydencji
 std::pair<std::vector<int>, std::vector<int>> bellmanFordMatrix(GraphMatrix& graph, int src, int dest) {
     std::vector<int> dist(graph.V, INT_MAX);
     std::vector<int> prev(graph.V, -1);
@@ -318,28 +318,4 @@ int fordFulkersonMatrix(GraphMatrix& graph, int src, int dest) {
         maxFlow += pathFlow;
     }
     return maxFlow;
-}
-
-void displayMST(const std::vector<Edge>& mst) {
-    std::cout << "Minimalne drzewo rozpinajace:\n";
-    for (const auto& edge : mst) {
-        std::cout << edge.src << " - " << edge.dest << " (waga: " << edge.weight << ")\n";
-    }
-}
-
-void displayShortestPath(int src, int dest, const std::vector<int>& dist, const std::vector<int>& path) {
-    if (dist[dest] == INT_MAX) {
-        std::cout << "Brak sciezki z " << src << " do " << dest << "\n";
-    } else {
-        std::cout << "Najkrotsza sciezka z " << src << " do " << dest << " (koszt: " << dist[dest] << "): ";
-        std::vector<int> fullPath;
-        for (int v = dest; v != -1; v = path[v]) {
-            fullPath.push_back(v);
-        }
-        std::reverse(fullPath.begin(), fullPath.end());
-        for (int v : fullPath) {
-            std::cout << v << " ";
-        }
-        std::cout << "\n";
-    }
 }

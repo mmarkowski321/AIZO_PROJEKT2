@@ -63,16 +63,22 @@ GraphMatrix readGraphFromFileMatrix(const std::string& filename) {
 GraphList generateRandomGraphList(int V, double density) {
     int E = density * V * (V - 1) / 2;
     GraphList graph(V, E);
+    // Tworzenie spójnego grafu przez dodanie drzewa rozpinającego
     for (int i = 0; i < V - 1; ++i) {
+        //do testów zmienie zakres wag
         int weight = rand() % 100 + 1;
         graph.addEdge(i, i + 1, weight);
     }
-    for (int i = V - 1; i < E; ++i) {
+    // Dodanie dodatkowych krawędzi, aby osiągnąć wymaganą gęstość
+    int additionalEdges = E - (V - 1);
+    while (additionalEdges > 0) {
         int src = rand() % V;
         int dest = rand() % V;
         if (src != dest) {
+            //do testów zmienie zakres wag
             int weight = rand() % 100 + 1;
             graph.addEdge(src, dest, weight);
+            --additionalEdges;
         }
     }
     return graph;
@@ -81,17 +87,26 @@ GraphList generateRandomGraphList(int V, double density) {
 GraphMatrix generateRandomGraphMatrix(int V, double density) {
     int E = density * V * (V - 1) / 2;
     GraphMatrix graph(V, E);
+
+    // Tworzenie spójnego grafu przez dodanie drzewa rozpinającego
     for (int i = 0; i < V - 1; ++i) {
+        //do testów zmienie zakres wag
         int weight = rand() % 100 + 1;
         graph.addEdge(i, i + 1, weight);
     }
-    for (int i = V - 1; i < E; ++i) {
+
+    // Dodanie dodatkowych krawędzi, aby osiągnąć wymaganą gęstość
+    int additionalEdges = E - (V - 1);
+    while (additionalEdges > 0) {
         int src = rand() % V;
         int dest = rand() % V;
-        if (src != dest) {
+        if (src != dest && graph.matrix[src][dest] == 0) {
+            //do testów zmienie zakres wag
             int weight = rand() % 100 + 1;
             graph.addEdge(src, dest, weight);
+            --additionalEdges;
         }
     }
+
     return graph;
 }
